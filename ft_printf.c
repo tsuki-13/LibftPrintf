@@ -6,7 +6,7 @@
 /*   By: mabar <mabar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 16:41:12 by mabar             #+#    #+#             */
-/*   Updated: 2025/12/08 15:23:03 by mabar            ###   ########.fr       */
+/*   Updated: 2025/12/10 13:35:18 by mabar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ static void	handlearguments(char c, va_list args, int *count)
 {
 	if (c == '%')
 		*count += write(1, "%", 1);
-	if (c == 'c')
+	else if (c == 'c')
 		*count += write(1, &(char){va_arg(args, int)}, 1);
-	if (c == 's')
+	else if (c == 's')
 		ft_putstr_fdd(va_arg(args, char *), 1, count);
-	if (c == 'd' || c == 'i')
+	else if (c == 'd' || c == 'i')
 		ft_putnbr_fdd(va_arg(args, int), 1, count);
-	if (c == 'x')
+	else if (c == 'x')
 		ft_putnbr_hexa((va_arg(args, unsigned int)), 'x', count);
-	if (c == 'X')
+	else if (c == 'X')
 		ft_putnbr_hexa((va_arg(args, unsigned int)), 'X', count);
-	if (c == 'u')
+	else if (c == 'u')
 		ft_putnbr_u(va_arg(args, unsigned int), count);
-	if (c == 'p')
+	else if (c == 'p')
 		handlepointer(va_arg(args, void *), count);
 }
 
@@ -58,6 +58,11 @@ int	ft_printf(const char *format, ...)
 	{
 		if (format[a] == '%')
 		{
+			if (format[a + 1] == '\0')
+			{
+				count--;
+				break;
+			}
 			handlearguments(format[a + 1], args, &count);
 			a++;
 		}
